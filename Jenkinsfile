@@ -14,10 +14,11 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'ls -al **/*.war'
                 deploy war: '**/*.war', 
                   contextPath: '/', 
-                  url: 'http://35.170.192.194:9090/'
+                  container: 'tomcat8x',
+                  url: 'http://35.170.192.194:8080/manager/text'
+
                   
             }
          }
