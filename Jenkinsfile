@@ -14,14 +14,13 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                script {
-                    def server = "http://tomcat_host:9090"
-                    def artifact = fingerprint('**/*.war')
-                    def deployPath = "${artifact.fileName}"
-                    def credentialsId = "tomcat_credentials"
-                    sh "curl --upload-file ${deployPath} ${server}/deploy?path=/${deployPath} --user ${credentialsId}"
-                }
+                sh 'ls -al **/*.war'
+                deploy war: '**/*.war', 
+                  contextPath: '/', 
+                  url: 'http://35.170.192.194:9090/',
+                  username: 'tomcat',
+                  password: 'tomcat@123'
             }
-        }
+         }
     }
 }
