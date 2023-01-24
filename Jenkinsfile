@@ -12,15 +12,14 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                deploy war: '**/*.war', 
-                  contextPath: '/', 
-                  container: 'tomcat8x',
-                  url: 'http://35.170.192.194:8080/manager/text'
-
-                  
+       
+        stage('Deploy to Production'){
+            steps{
+                timeout(time:5, unit:'DAYS'){
+                    input message:'Approve PRODUCTION Deployment?'
+                }
+                build job: 'copy'
             }
-         }
+        }
     }
 }
