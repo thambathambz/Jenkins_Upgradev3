@@ -12,19 +12,15 @@ pipeline {
                 }
             }
         }
-        stage('Deploy in Staging Environment'){
-            steps{
-                build job: 'Deploy_Application_Staging_Env'
-
-            }
-            
-        }
-        stage('Deploy to Production'){
-            steps{
-                timeout(time:5, unit:'DAYS'){
-                    input message:'Approve PRODUCTION Deployment?'
+        stage('Deploy') {
+            steps {
+                script {
+                    def server = "http://tomcat_host:9090"
+                    def artifact = fingerprint('**/*.war')
+                    def deployPath = "${artifact.fileName}"
+                    def credentialsId = "tomcat_credentials"
+                    sh "curl --upload-file ${deployPath} ${server}/deploy?path=/${deployPath} --user ${credentialsId}"
                 }
-                build job: 'Deploy_Application_Prod_Env'
             }
         }
     }
