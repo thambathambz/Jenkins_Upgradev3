@@ -17,7 +17,9 @@ pipeline {
                 sh 'ls -al **/*.war'
                 deploy war: '**/*.war', 
                   contextPath: '/', 
-                  url: 'http://35.170.192.194:9090/'
+                  url: 'http://35.170.192.194:9090/',
+                  username: 'tomcat',
+                  password: 'tomcat@123'
             }
          }
     }
